@@ -1,0 +1,2 @@
+- Euler-Mascharoni approximation via Mac Laurin
+- Bernoulli numbers and poly
