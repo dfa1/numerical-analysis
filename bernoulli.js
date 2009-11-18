@@ -1,9 +1,13 @@
 function fact(n) {
-    return reduce(range(n), operators.mul, 1);
+    if (n > 15) {
+        return Math.sqrt(2 * Math.PI * n) * Math.pow(n / Math.E, n);
+    } else {
+        return reduce(range(n), operators.mul, 1);
+    }
 }
 
 function comb(n, k) {
-    return fact(n) / (fact(n-k) * fact(k));
+    return fact(n) / (fact(n - k) * fact(k));
 }
 
 function bernoulli(n, m) {
