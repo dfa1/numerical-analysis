@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+        <title>Integration</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" href="style.css">
+        <script type="text/javascript" src="jquery.js"></script>
+        <!--[if IE]><script type="text/javascript" src="excanvas.min.js"></script><![endif]-->
+        <script type="text/javascript" src="jquery.flot.js"></script>
+        <script type="text/javascript" src="functional.js"></script>
+        <script type="text/javascript">
+            $(function() {                
+                $('#calc').click(function() {
+                    var f = $('#f').val();
+                    var n = $('#n').val().replace(",", ".");
+                    var error = false;
+                    var aNumber = /^\d+(\.\d+)?$/;
+
+                    if (!n || !n.match(aNumber) || n < 0) {
+                        $('#n').css('background', 'red');
+                        error = true;
+                    } else {
+                        $('#n').css('background', 'white');
+                    }
+
+                    if (!f) {
+                        $('#f').css('background', 'red');
+                        error = true;
+                    } else {
+                        $('#f').css('background', 'white');
+                    }
+
+                    if (error) {
+                        return;
+                    }
+
+                    var a = -5;
+                    var b = 5;
+                    var h = (b - a) / n;
+                    var points = [];
+
+                    for (var x = a; x <= b; x += h) {
+                        var y = eval(f);
+                        points.push([x, y]);
+                    }
+
+                    $.plot($("#graph"), [
+                        {
+                            data   : points,
+                            lines  : { show: true },
+                            points : { show: true }
+                        }
+                    ]);
+
+                    //$('#results').append('f(x) = ' + f);
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <h1>Integration</h1>
+        <p>
+            Please specify <b>f(x)</b> and n &gt; 0.
+        </p>
+
+        <label>f(x)</label><input id="f" type="text"/>
+        <label>n</label><input id="n" type="text"/>
+        <p>
+            <b>NB</b>: 3,14 is interpreted as 3.14
+        </p>
+
+        <button id="calc">Integrate!</button>
+
+        <div id="results">
+        </div>
+
+        <div id="graph" style="width:600px;height:300px;">
+        </div> 
+        <p>by Davide Angelocola 3 Nov 2009</p>
+    </body>
+</html>
