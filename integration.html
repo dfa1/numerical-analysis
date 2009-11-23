@@ -24,7 +24,7 @@
                     var a = $('#a').val().replace(",", ".");
                     var b = $('#b').val().replace(",", ".");
                     var error = false;
-                    var aNumber = /^\d+(\.\d+)?$/;
+                    var aNumber = /^\-?\d+(\.\d+)?$/;
 
                     if (!n || !n.match(aNumber) || n < 0) {
                         $('#n').css('background', 'red');
@@ -85,7 +85,6 @@
                             points : { show: true }
                         }
                     ]);
-
                 });
             });
         </script>
