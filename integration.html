@@ -58,6 +58,7 @@
                         return;
                     }
 
+                    // prevent string concatenation in place of addition
                     a = parseInt(a);
                     b = parseInt(b);
                     n = parseInt(n);
@@ -71,7 +72,6 @@
                     $('#results').append('b = ' + b + '<br/>');
                     $('#results').append('h = ' + h + '<br/>');
 
-                    var i = 0;
                     for (var x = a; x <= b; x += h) {
                         var y = eval(f);
                         $('#results').append('f(' + x + ') = ' + y + '<br/>');
