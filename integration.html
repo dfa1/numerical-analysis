@@ -9,10 +9,20 @@
         <script type="text/javascript" src="jquery.flot.js"></script>
         <script type="text/javascript" src="functional.js"></script>
         <script type="text/javascript">
-            $(function() {                
+            $(function() {
+                // aliases for shortering expressions f(x)
+                var cos = Math.cos;
+                var sin = Math.sin;
+                var tan = Math.tan;
+                var pow = Math.pow;
+                var log = Math.log;
+                var exp = Math.exp;
+
                 $('#calc').click(function() {
                     var f = $('#f').val();
                     var n = $('#n').val().replace(",", ".");
+                    var a = $('#a').val().replace(",", ".");
+                    var b = $('#b').val().replace(",", ".");
                     var error = false;
                     var aNumber = /^\d+(\.\d+)?$/;
 
@@ -30,17 +40,41 @@
                         $('#f').css('background', 'white');
                     }
 
+                    if (!a || !a.match(aNumber)) {
+                        $('#a').css('background', 'red');
+                        error = true;
+                    } else {
+                        $('#a').css('background', 'white');
+                    }
+
+                    if (!b || !b.match(aNumber)) {
+                        $('#b').css('background', 'red');
+                        error = true;
+                    } else {
+                        $('#b').css('background', 'white');
+                    }
+
                     if (error) {
                         return;
                     }
 
-                    var a = -5;
-                    var b = 5;
+                    a = parseInt(a);
+                    b = parseInt(b);
+                    n = parseInt(n);
+
                     var h = (b - a) / n;
                     var points = [];
 
+                    $('#results').html('');
+                    $('#results').append('n = ' + n + '<br/>');
+                    $('#results').append('a = ' + a + '<br/>');
+                    $('#results').append('b = ' + b + '<br/>');
+                    $('#results').append('h = ' + h + '<br/>');
+
+                    var i = 0;
                     for (var x = a; x <= b; x += h) {
                         var y = eval(f);
+                        $('#results').append('f(' + x + ') = ' + y + '<br/>');
                         points.push([x, y]);
                     }
 
@@ -52,7 +86,6 @@
                         }
                     ]);
 
-                    //$('#results').append('f(x) = ' + f);
                 });
             });
         </script>
@@ -60,22 +93,26 @@
     <body>
         <h1>Integration</h1>
         <p>
-            Please specify <b>f(x)</b> and n &gt; 0.
+            Please specify <b>f(x)</b>, n &gt; 0 and an interval [a, b], b &gt; a.
         </p>
 
         <label>f(x)</label><input id="f" type="text"/>
         <label>n</label><input id="n" type="text"/>
+        <label>a</label><input id="a" type="text"/>
+        <label>b</label><input id="b" type="text"/>
+
         <p>
             <b>NB</b>: 3,14 is interpreted as 3.14
         </p>
 
         <button id="calc">Integrate!</button>
 
+        <div id="graph" style="width:600px;height:300px;">
+        </div>
+
         <div id="results">
         </div>
 
-        <div id="graph" style="width:600px;height:300px;">
-        </div> 
         <p>by Davide Angelocola 3 Nov 2009</p>
     </body>
 </html>
