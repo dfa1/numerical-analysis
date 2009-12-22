@@ -27,18 +27,18 @@
                     var error = false;
                     var aNumber = /^\-?\d+(\.\d+)?$/;
 
-                    if (!n || !n.match(aNumber) || n < 0) {
-                        $('#n').css('background', 'red');
-                        error = true;
-                    } else {
-                        $('#n').css('background', 'white');
-                    }
-
                     if (!f) {
                         $('#f').css('background', 'red');
                         error = true;
                     } else {
                         $('#f').css('background', 'white');
+                    }
+
+                    if (!n || !n.match(aNumber) || n < 0) {
+                        $('#n').css('background', 'red');
+                        error = true;
+                    } else {
+                        $('#n').css('background', 'white');
                     }
 
                     if (!a || !a.match(aNumber)) {
@@ -55,14 +55,18 @@
                         $('#b').css('background', 'white');
                     }
 
+                    a = parseFloat(a);
+                    b = parseFloat(b);
+                    n = parseInt(n);
+
+                    if (b <= a) {
+                        $('#b').css('background', 'red');
+                        error = true;
+                    }
+                    
                     if (error) {
                         return;
                     }
-
-                    // prevent string concatenation in place of addition
-                    a = parseInt(a);
-                    b = parseInt(b);
-                    n = parseInt(n);
 
                     var h = (b - a) / n;
                     var points = [];
