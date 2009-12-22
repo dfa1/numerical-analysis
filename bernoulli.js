@@ -1,10 +1,8 @@
 function fact(n) {
-    if (n > 15) {
-        return Math.sqrt(2 * Math.PI * n) * Math.pow(n / Math.E, n);
-    } else {
-        return reduce(range(n), operators.mul, 1);
-    }
+    return reduce('a*b', range(n), 1);
 }
+
+fact = memoize(fact);
 
 function comb(n, k) {
     return fact(n) / (fact(n - k) * fact(k));
