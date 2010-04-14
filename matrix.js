@@ -56,6 +56,16 @@ function matrix(n, m) {
     return matrix;
 }
 
+function identity(n) {
+    var I = matrix(n, n);
+    
+    for (var i = 0; i < n; i++) {
+	I[i][i] = 1;
+    }
+
+    return I;
+}
+
 function print(matrix) {
     for (var i = 0; i < rows(matrix); i++) {
 	for (var j = 0; j < columns(matrix); j++) {
@@ -85,13 +95,13 @@ function mul(A, B) {
 }
 
 function main() {
-    //var A = matrix(10, 10);
-    // var A = [
-    // 	[ 3, 2, 1, 5 ],
-    // 	[ 3, 2, 3, 2 ],
-    // 	[ 0, 2, 3, 3 ],
-    // 	[ 0, 0, 1, 6 ]
-    // ];
+    var Z = matrix(10, 10);
+    var H = [
+    	[ 3, 2, 1, 5 ],
+    	[ 3, 2, 3, 2 ],
+    	[ 0, 2, 3, 3 ],
+    	[ 0, 0, 1, 6 ]
+    ];
     var A = [ 
 	[ 1, 0, 2],
 	[-1, 3, 1]
@@ -102,7 +112,9 @@ function main() {
 	[1, 0]
     ];
 
-    print(A);
-    print(B);    
-    print(mul(A, B));
+    print(identity(10));
+    // print(A);
+    // print(B);    
+    // print(mul(A, B));
+
 }
