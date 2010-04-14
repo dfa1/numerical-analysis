@@ -94,6 +94,18 @@ function mul(A, B) {
     return R;
 }
 
+function traspose(A) {
+    var T = matrix(columns(A), rows(A));
+
+    for (var i = 0; i < rows(A); i++) {
+	for (var j = 0; j < columns(A); j++) {
+	    T[j][i] = A[i][j];
+	}
+    }
+
+    return T;
+}
+
 function main() {
     var Z = matrix(10, 10);
     var H = [
@@ -112,8 +124,8 @@ function main() {
 	[1, 0]
     ];
 
-    print(identity(10));
-    // print(A);
+    //print(identity(10));
+    print(traspose(H));
     // print(B);    
     // print(mul(A, B));
 
