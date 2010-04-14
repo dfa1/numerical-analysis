@@ -66,15 +66,6 @@ function identity(n) {
     return I;
 }
 
-function print(matrix) {
-    for (var i = 0; i < rows(matrix); i++) {
-	for (var j = 0; j < columns(matrix); j++) {
-	    document.write(matrix[i][j] + " " );
-	}
-
-	document.write("<br/>");
-    }
-}
 
 function mul(A, B) {
     if (columns(A) != rows(B)) {
@@ -106,6 +97,28 @@ function traspose(A) {
     return T;
 }
 
+function Q(n, i, alpha, beta) {
+    var Q = matrix(n, n);
+    Q[i][i] = alpha;
+    Q[i+1][i] = beta;
+    Q[i][i+1] = -beta;
+    Q[i+1][i+1] = alpha;
+    return Q;
+}
+
+
+function print(matrix) {
+    for (var i = 0; i < rows(matrix); i++) {
+	for (var j = 0; j < columns(matrix); j++) {
+	    document.write(matrix[i][j] + " " );
+	}
+
+	document.write("<br/>");
+    }
+
+    document.write("<hr/>");
+}
+
 function main() {
     var Z = matrix(10, 10);
     var H = [
@@ -125,8 +138,11 @@ function main() {
     ];
 
     //print(identity(10));
-    print(traspose(H));
+    //print(traspose(H));
     // print(B);    
     // print(mul(A, B));
-
+    print(Q(5, 0, 2, 2));
+    print(Q(5, 1, 2, 2));
+    print(Q(5, 2, 2, 2));
+    print(Q(5, 3, 2, 2));
 }
