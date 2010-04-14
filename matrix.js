@@ -1,3 +1,7 @@
+function len(array) {
+    return array.length;
+}
+
 function array(size, filler) {    
     if (size < 1) {
 	size = 1;
@@ -27,14 +31,12 @@ function matrix(n, m) {
 	matrix.push(array(m, 0));
     }
 
-    matrix.n = n;
-    matrix.m = m;
     return matrix;
 }
 
 function print(matrix) {
-    for (var i = 0; i < matrix.n; i++) {
-	for (var j = 0; j < matrix.m; j++) {
+    for (var i = 0; i < len(matrix); i++) {
+	for (var j = 0; j < len(matrix[i]); j++) {
 	    document.write(matrix[i][j] + " " );
 	}
 
@@ -43,6 +45,13 @@ function print(matrix) {
 }
 
 function main() {
-    var A = matrix(10, 10);
+    //var A = matrix(10, 10);
+    var A = [
+	[ 3, 2, 1, 5 ],
+	[ 3, 2, 3, 2 ],
+	[ 0, 2, 3, 3 ],
+	[ 0, 0, 1, 6 ]
+    ];
+
     print(A);
 }
