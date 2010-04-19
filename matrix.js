@@ -129,7 +129,6 @@ function hessembergize(A) {
 
 function abate(n) {
     var A = matrix(n, n, 0);
-    var B = matrix(n, n, 0);
 
     // riempo A
     for (var i = 0; i < n - 1; i++) {
@@ -139,12 +138,24 @@ function abate(n) {
     A[n-1][n-1] = 2 * (n - 2); 
 
     // riempo B
+    var B = matrix(n, n, 0);
+    B[0][0] = -3;    
+    for (var i = 1; i < n; i++) {
+	B[i][i] = -1;
+    }
+    for (var i = 0; i < n; i++) {
+	B[i][i+1] = 1;
+    }
 
-    return A;
+    for (var i = 1; i < n; i++) {
+	B[i][0] = -2;	
+    }
+    return mul(A, B);
 }
 
 function main() {
     var Z = matrix(10, 10);
+
     var H = [
     	[ 3, 2, 1, 5 ],
     	[ 3, 2, 3, 2 ],
