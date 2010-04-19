@@ -1,6 +1,14 @@
+function sqrt(n) {
+    return Math.sqrt(n);
+}
+
+function square(n) {
+    return n * n;
+}
+
 function rows(matrix) {
     if (matrix === undefined || matrix === null) {
-	throw 'not a matrix';	
+	throw 'not a matrix';
     }
 
     if (matrix.rows) {
@@ -12,7 +20,7 @@ function rows(matrix) {
 
 function columns(matrix) {
     if (matrix === undefined || matrix === null) {
-	throw 'not a matrix';	
+	throw 'not a matrix';
     }
 
     if (matrix.columns !== undefined) {
@@ -22,7 +30,7 @@ function columns(matrix) {
     }
 }
 
-function array(size, filler) {    
+function array(size, filler) {
     if (size < 1) {
 	size = 1;
     }
@@ -32,7 +40,7 @@ function array(size, filler) {
     for (var i = 0; i < size; i++) {
 	array[i] = filler;
     }
-    
+
     return array;
 }
 
@@ -56,9 +64,20 @@ function matrix(n, m) {
     return matrix;
 }
 
+function copy(aMatrix) {
+    var copy = matrix(rows(aMatrix), columns(aMatrix));
+
+    each(range(0, rows(aMatrix) - 1), function(i) {
+    	     each(range(0, columns(aMatrix) - 1), function(j) {
+    		      copy[i][j] = aMatrix[i][j];
+    		  })});
+
+    return copy;
+}
+
 function identity(n) {
     var I = matrix(n, n);
-    
+
     for (var i = 0; i < n; i++) {
 	I[i][i] = 1;
     }
@@ -105,6 +124,20 @@ function Q(n, i, alpha, beta) {
     return Q;
 }
 
+function S(n, p, q, alpha, beta) {
+    var S = matrix(n, n);
+
+    each(range(0, n - 1), function(i) {
+	     S[i][i] = 1;
+	 });
+
+    S[p][p] = alpha;
+    S[p][q] = beta;
+    S[q][p] = -beta;
+    S[q][q] = alpha;
+    return S;
+}
+
 function print(matrix) {
     document.write('<table border=1 cellpadding=3>');
 
@@ -122,12 +155,31 @@ function print(matrix) {
 }
 
 function QR(A) {
-    
+
 }
 
 function hessembergize(A) {
-    var H = matrix(rows(A), columns(A));    
-    
+    var H = copy(A);
+    var n = rows(A);
+
+    // for (var p = 1; p < n - 1; p++) {
+    // 	for (var q = p + 1; q < n; q++) {
+    // 	    document.write(p + ',' + q + '<br/>') ;
+    // 	}
+    // }
+
+    each(range(1, n - 1), function(p) {
+    	     each(range(p + 1, n), function(q) {
+		      var d = sqrt(square(A[p-1][p]) + square(A[p-1][q]));
+		      var alpha = A[p-1][p] / d;
+		      var beta = -A[p-1][q] / d;
+		      var Sk = S(n, p, q, alpha, beta);
+		      document.write('p ' + p);
+		      print(Sk);
+		      H = mul(traspose(Sk), mul(A, Sk));
+    		  });
+    	 });
+
     return H;
 }
 
@@ -138,12 +190,12 @@ function abate(n) {
     for (var i = 0; i < n - 1; i++) {
 	A[i][i] = n + i;
     }
-    
-    A[n-1][n-1] = 2 * (n - 2); 
+
+    A[n-1][n-1] = 2 * (n - 2);
 
     // riempo B
     var B = matrix(n, n, 0);
-    B[0][0] = -3;    
+    B[0][0] = -3;
     for (var i = 1; i < n; i++) {
 	B[i][i] = -1;
     }
@@ -152,7 +204,7 @@ function abate(n) {
     }
 
     for (var i = 1; i < n; i++) {
-	B[i][0] = -2;	
+	B[i][0] = -2;
     }
     return mul(A, B);
 }
@@ -166,7 +218,7 @@ function main() {
     	[ 0, 2, 3, 3 ],
     	[ 0, 0, 1, 6 ]
     ];
-    var A = [ 
+    var A = [
 	[ 1, 0, 2],
 	[-1, 3, 1]
     ];
@@ -178,11 +230,13 @@ function main() {
 
     //print(identity(10));
     //print(traspose(H));
-    // print(B);    
+    // print(B);
     // print(mul(A, B));
     // print(Q(5, 0, 2, 2));
     // print(Q(5, 1, 2, 2));
     // print(Q(5, 2, 2, 2));
     // print(Q(5, 3, 2, 2));
-    print(abate(4));
+//    print(abate(4));
+//   print(hessembergize(abate(4)));
+//    print(S(10, 5, 7, 42, 84));
 }
