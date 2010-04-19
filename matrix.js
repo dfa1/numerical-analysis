@@ -106,15 +106,19 @@ function Q(n, i, alpha, beta) {
 }
 
 function print(matrix) {
+    document.write('<table border=1 cellpadding=3>');
+
     for (var i = 0; i < rows(matrix); i++) {
+	document.write('<tr align="center">');
+
 	for (var j = 0; j < columns(matrix); j++) {
-	    document.write(matrix[i][j] + " " );
+	    document.write('<td>'+ matrix[i][j] + '</td');
 	}
 
-	document.write("<br/>");
+	document.write("</tr>");
     }
 
-    document.write("<hr/>");
+    document.write("</table>");
 }
 
 function QR(A) {
