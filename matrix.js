@@ -66,7 +66,6 @@ function identity(n) {
     return I;
 }
 
-
 function mul(A, B) {
     if (columns(A) != rows(B)) {
     	throw 'incompatible matrices';
@@ -106,7 +105,6 @@ function Q(n, i, alpha, beta) {
     return Q;
 }
 
-
 function print(matrix) {
     for (var i = 0; i < rows(matrix); i++) {
 	for (var j = 0; j < columns(matrix); j++) {
@@ -117,6 +115,32 @@ function print(matrix) {
     }
 
     document.write("<hr/>");
+}
+
+function QR(A) {
+    
+}
+
+function hessembergize(A) {
+    var H = matrix(rows(A), columns(A));    
+    
+    return H;
+}
+
+function abate(n) {
+    var A = matrix(n, n, 0);
+    var B = matrix(n, n, 0);
+
+    // riempo A
+    for (var i = 0; i < n - 1; i++) {
+	A[i][i] = n + i;
+    }
+    
+    A[n-1][n-1] = 2 * (n - 2); 
+
+    // riempo B
+
+    return A;
 }
 
 function main() {
@@ -141,8 +165,9 @@ function main() {
     //print(traspose(H));
     // print(B);    
     // print(mul(A, B));
-    print(Q(5, 0, 2, 2));
-    print(Q(5, 1, 2, 2));
-    print(Q(5, 2, 2, 2));
-    print(Q(5, 3, 2, 2));
+    // print(Q(5, 0, 2, 2));
+    // print(Q(5, 1, 2, 2));
+    // print(Q(5, 2, 2, 2));
+    // print(Q(5, 3, 2, 2));
+    print(abate(4));
 }
