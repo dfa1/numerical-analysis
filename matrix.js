@@ -168,8 +168,8 @@ function hessembergize(A) {
     // 	}
     // }
 
-    each(range(1, n - 1), function(p) {
-    	     each(range(p + 1, n), function(q) {
+    each(range(1, n - 2), function(p) {
+    	     each(range(p + 1, n - 1), function(q) {
 		      var d = sqrt(square(A[p-1][p]) + square(A[p-1][q]));
 		      var alpha = A[p-1][p] / d;
 		      var beta = -A[p-1][q] / d;
@@ -237,6 +237,6 @@ function main() {
     // print(Q(5, 2, 2, 2));
     // print(Q(5, 3, 2, 2));
 //    print(abate(4));
-//   print(hessembergize(abate(4)));
+  print(hessembergize(abate(4)));
 //    print(S(10, 5, 7, 42, 84));
 }
