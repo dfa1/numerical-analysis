@@ -30,6 +30,24 @@ function columns(matrix) {
     }
 }
 
+function equals(A, B) {
+    if (rows(A) != rows(B)) {
+	return false;
+    }
+
+    if (columns(A) != columns(B)) {
+	return false;
+    }
+
+    each(range(0, rows(A) - 1), function(i) {
+    	     each(range(0, columns(A) - 1), function(j) {
+		      if (A[i][j] !== B[i][j]) {
+			  return false;
+		      }})});
+
+    return true;
+}
+
 function array(size, filler) {
     if (size < 1) {
 	size = 1;
@@ -237,6 +255,7 @@ function main() {
     // print(Q(5, 2, 2, 2));
     // print(Q(5, 3, 2, 2));
 //    print(abate(4));
-  print(hessembergize(abate(4)));
+//  print(hessembergize(abate(4)));
 //    print(S(10, 5, 7, 42, 84));
+    document.write('' +equals(matrix(10, 10), matrix(10, 10)));
 }
