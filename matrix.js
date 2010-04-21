@@ -1,3 +1,9 @@
+function constant(k) {
+    return function() {
+	return k;
+    };
+}
+
 function sqrt(n) {
     return Math.sqrt(n);
 }
@@ -65,12 +71,7 @@ function row(size, filler) {
 	filler = 0;
     }
 
-    var row = new Array(size);
-
-    each(indexes(size), function(i) {
-	     row[i] = filler;
-	 });
-    return row;
+    return map(range(size), constant(filler));
 }
 
 function matrix(n, m) {
@@ -104,11 +105,9 @@ function copy(aMatrix) {
 
 function identity(n) {
     var I = matrix(n, n);
-
-    for (var i = 0; i < n; i++) {
-	I[i][i] = 1;
-    }
-
+    each(indexes(n), function(i) {
+	     I[i][i] = 1;
+	 });
     return I;
 }
 
@@ -119,13 +118,13 @@ function mul(A, B) {
 
     var R = matrix(rows(A), columns(B));
 
-    for (var i = 0; i < rows(A); i++) {
-    	for (var j = 0; j < columns(B); j++) {
-    	    for (var r = 0; r < columns(A); r++) {
-    		R[i][j] += (A[i][r] * B[r][j]);
-    	    }
-    	}
-    }
+    each(indexes(rows(A)), function(i) {
+	     each(indexes(columns(B)), function(j) {
+		      each(indexes(columns(A)), function(k) {
+			       R[i][j] += (A[i][k] * B[k][j]);
+			   })
+		  })
+	 });
 
     return R;
 }
@@ -133,12 +132,12 @@ function mul(A, B) {
 function traspose(A) {
     var T = matrix(columns(A), rows(A));
 
-    for (var i = 0; i < rows(A); i++) {
-	for (var j = 0; j < columns(A); j++) {
-	    T[j][i] = A[i][j];
-	}
-    }
-
+    each(indexes(rows(A)), function(i) {
+	     each(indexes(columns(A)), function(j) {
+		      T[j][i] = A[i][j];
+		  }); 
+	 });
+    
     return T;
 }
 
@@ -173,12 +172,6 @@ function hessembergize(A) {
     var H = copy(A);
     var n = rows(A);
 
-    // for (var p = 1; p < n - 1; p++) {
-    // 	for (var q = p + 1; q < n; q++) {
-    // 	    document.write(p + ',' + q + '<br/>') ;
-    // 	}
-    // }
-
     each(range(1, n - 2), function(p) {
     	     each(range(p + 1, n - 1), function(q) {
 		      var d = sqrt(square(A[p-1][p]) + square(A[p-1][q]));
@@ -194,31 +187,31 @@ function hessembergize(A) {
 }
 
 function abate(n) {
-    var A = matrix(n, n, 0);
-
-    // riempo A
-    for (var i = 0; i < n - 1; i++) {
-	A[i][i] = n + i;
-    }
-
+    // left matrix
+    var A = matrix(n, n);
+    
+    each(indexes(n - 1), function(i) {
+	     A[i][i] = n + i;
+	 });
+    
     A[n-1][n-1] = 2 * (n - 2);
 
-    // riempo B
-    var B = matrix(n, n, 0);
+    // right matrix
+    var B = matrix(n, n);
     B[0][0] = -3;
+    
+    each(range(n - 1), function(i) {
+    	     B[i][i] = -1;
+    	 });
 
-    for (var i = 1; i < n; i++) {
-	B[i][i] = -1;
-    }
-
-    for (var i = 0; i < n; i++) {
-	B[i][i+1] = 1;
-    }
-
-    for (var i = 1; i < n; i++) {
-	B[i][0] = -2;
-    }
-
+    each(indexes(n), function(i) {
+    	     B[i][i+1] = 1;
+    	 });
+    
+    each(range(n - 1), function(i) {
+    	     B[i][0] = -2;
+    	 });
+    
     return mul(A, B);
 }
 
