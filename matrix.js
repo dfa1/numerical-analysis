@@ -40,8 +40,8 @@ function equals(A, B) {
     }
 
     var equal = true;
-    each(range(0, rows(A) - 1), function(i) {
-    	     each(range(0, columns(A) - 1), function(j) {
+    each(indexes(rows(A)), function(i) {
+    	     each(indexes(columns(A)), function(j) {
 		      if (A[i][j] !== B[i][j]) {
 			  equal = false;
 		      }
@@ -49,6 +49,11 @@ function equals(A, B) {
 	 });
 
     return equal;
+}
+
+// returns indexes between 0 and n - 1
+function indexes(upTo) {
+    return range(0, upTo - 1);
 }
 
 function row(size, filler) {
@@ -62,10 +67,9 @@ function row(size, filler) {
 
     var row = new Array(size);
 
-    for (var i = 0; i < size; i++) {
-	row[i] = filler;
-    }
-
+    each(indexes(size), function(i) {
+	     row[i] = filler;
+	 });
     return row;
 }
 
@@ -80,10 +84,10 @@ function matrix(n, m) {
 
     var matrix = new Array();
 
-    for (var i = 0; i < n; i++) {
-	matrix.push(row(m, 0));
-    }
-
+    each(indexes(n), function() {
+	     matrix.push(row(m));	     
+	 });
+    
     matrix.rows = n;
     matrix.columns = m;
     return matrix;
@@ -91,12 +95,10 @@ function matrix(n, m) {
 
 function copy(aMatrix) {
     var copy = matrix(rows(aMatrix), columns(aMatrix));
-
-    each(range(0, rows(aMatrix) - 1), function(i) {
-    	     each(range(0, columns(aMatrix) - 1), function(j) {
+    each(indexes(rows(aMatrix)), function(i) {
+    	     each(indexes(columns(aMatrix)), function(j) {
     		      copy[i][j] = aMatrix[i][j];
     		  })});
-
     return copy;
 }
 
@@ -152,17 +154,16 @@ function Q(n, i, alpha, beta) {
 function S(n, p, q, alpha, beta) {
     var S = matrix(n, n);
 
-    each(range(0, n - 1), function(i) {
+    each(indexes(n), function(i) {
 	     S[i][i] = 1;
 	 });
-
+    
     S[p][p] = alpha;
     S[p][q] = beta;
     S[q][p] = -beta;
     S[q][q] = alpha;
     return S;
 }
-
 
 function QR(A) {
 
