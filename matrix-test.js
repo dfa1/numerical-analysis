@@ -20,6 +20,9 @@ function dump(matrix, caption) {
 }
 
 function runtests() {
+    is(equals(identity(10), copy(identity(10))));
+    is(equals(matrix(10), copy(matrix(10))));
+    
     each(range(10), function(i) {
 	     is(rows(matrix(i, i)), i);    
 	 });
@@ -88,7 +91,7 @@ function runtests() {
     dump(Q(5, 2, 2, 2));
     dump(Q(5, 3, 2, 2));
 
-//    dump(hessembergize(abate(4)));
+    // dump(hessembergize(abate(4)));
 
     var H = [
     	[ 3, 2, 1, 5 ],

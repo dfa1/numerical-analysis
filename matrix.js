@@ -98,14 +98,10 @@ function matrix(n, m) {
     return matrix;
 }
 
-function copy(aMatrix) {
-    var copy = matrix(rows(aMatrix), columns(aMatrix));
-    iterate(rows(aMatrix), function(i) {
-    	iterate(columns(aMatrix), function(j) {
-    	    copy[i][j] = aMatrix[i][j];
-    	})
-    });
-    return copy;
+// duplicate a matrix
+// TODO: not very efficient :-(
+function copy(matrix) {
+    return traspose(traspose(matrix));
 }
 
 function identity(n) {
