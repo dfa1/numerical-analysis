@@ -12,6 +12,10 @@ function square(n) {
     return n * n;
 }
 
+function hypot(a, b) {
+    return sqrt(square(a), square(b));
+}
+
 function rows(matrix) {
     if (matrix === undefined || matrix === null) {
 	throw 'not a matrix';
@@ -217,6 +221,5 @@ function abate(n) {
 }
 
 function main() {
-    alert('da scrivere');
 }
 
