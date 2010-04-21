@@ -30,6 +30,14 @@ function columns(matrix) {
     }
 }
 
+function iterateAll(Ah, aFunction) {
+    each(range(0, heerows(A) - 1), function(i) {
+    	     each(range(0, columns(A) - 1), function(j) {
+		      aFunction(i, j);
+		  })
+	 });
+}
+
 function equals(A, B) {
     if (rows(A) != rows(B)) {
 	return false;
@@ -39,13 +47,16 @@ function equals(A, B) {
 	return false;
     }
 
+    var equal = true;
     each(range(0, rows(A) - 1), function(i) {
     	     each(range(0, columns(A) - 1), function(j) {
 		      if (A[i][j] !== B[i][j]) {
-			  return false;
-		      }})});
+			  equal = false;
+		      }
+		  })
+	 });
 
-    return true;
+    return equal;
 }
 
 function array(size, filler) {
@@ -254,8 +265,8 @@ function main() {
     // print(Q(5, 1, 2, 2));
     // print(Q(5, 2, 2, 2));
     // print(Q(5, 3, 2, 2));
-//    print(abate(4));
-//  print(hessembergize(abate(4)));
-//    print(S(10, 5, 7, 42, 84));
-    document.write('' +equals(matrix(10, 10), matrix(10, 10)));
+    // print(abate(4));
+    // print(hessembergize(abate(4)));
+    // print(S(10, 5, 7, 42, 84));
+    document.write('' + equals(matrix(10, 10), matrix(10, 10)));
 }
