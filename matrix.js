@@ -167,21 +167,6 @@ function S(n, p, q, alpha, beta) {
     return S;
 }
 
-function print(matrix) {
-    document.write('<table border=1 cellpadding=3>');
-
-    for (var i = 0; i < rows(matrix); i++) {
-	document.write('<tr align="center">');
-
-	for (var j = 0; j < columns(matrix); j++) {
-	    document.write('<td>'+ matrix[i][j] + '</td');
-	}
-
-	document.write("</tr>");
-    }
-
-    document.write("</table>");
-}
 
 function QR(A) {
 
@@ -257,16 +242,22 @@ function main() {
 	[1, 0]
     ];
 
-    //print(identity(10));
-    //print(traspose(H));
-    // print(B);
-    // print(mul(A, B));
-    // print(Q(5, 0, 2, 2));
-    // print(Q(5, 1, 2, 2));
-    // print(Q(5, 2, 2, 2));
-    // print(Q(5, 3, 2, 2));
-    // print(abate(4));
-    // print(hessembergize(abate(4)));
-    // print(S(10, 5, 7, 42, 84));
-    document.write('' + equals(matrix(10, 10), matrix(10, 10)));
+}
+
+// helper
+function toTable(matrix) {
+    var table = '<table border=1 cellpadding=3>';
+
+    for (var i = 0; i < rows(matrix); i++) {
+	table += '<tr align="center">';
+
+	for (var j = 0; j < columns(matrix); j++) {
+	    table += '<td>'+ matrix[i][j] + '</td>';
+	}
+
+	table += "</tr>";
+    }
+
+    table += "</table>";
+    return table;
 }
