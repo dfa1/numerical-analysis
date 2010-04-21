@@ -30,14 +30,6 @@ function columns(matrix) {
     }
 }
 
-function iterateAll(Ah, aFunction) {
-    each(range(0, heerows(A) - 1), function(i) {
-    	     each(range(0, columns(A) - 1), function(j) {
-		      aFunction(i, j);
-		  })
-	 });
-}
-
 function equals(A, B) {
     if (rows(A) != rows(B)) {
 	return false;
@@ -59,18 +51,18 @@ function equals(A, B) {
     return equal;
 }
 
-function array(size, filler) {
+function row(size, filler) {
     if (size < 1) {
 	size = 1;
     }
 
-    var array = new Array(size);
+    var row = new Array(size);
 
     for (var i = 0; i < size; i++) {
-	array[i] = filler;
+	row[i] = filler;
     }
 
-    return array;
+    return row;
 }
 
 function matrix(n, m) {
@@ -85,7 +77,7 @@ function matrix(n, m) {
     var matrix = new Array();
 
     for (var i = 0; i < n; i++) {
-	matrix.push(array(m, 0));
+	matrix.push(row(m, 0));
     }
 
     matrix.rows = n;
@@ -188,7 +180,6 @@ function hessembergize(A) {
 		      var alpha = A[p-1][p] / d;
 		      var beta = -A[p-1][q] / d;
 		      var Sk = S(n, p, q, alpha, beta);
-		      document.write('p ' + p);
 		      print(Sk);
 		      H = mul(traspose(Sk), mul(A, Sk));
     		  });
@@ -210,9 +201,11 @@ function abate(n) {
     // riempo B
     var B = matrix(n, n, 0);
     B[0][0] = -3;
+
     for (var i = 1; i < n; i++) {
 	B[i][i] = -1;
     }
+
     for (var i = 0; i < n; i++) {
 	B[i][i+1] = 1;
     }
@@ -220,44 +213,11 @@ function abate(n) {
     for (var i = 1; i < n; i++) {
 	B[i][0] = -2;
     }
+
     return mul(A, B);
 }
 
 function main() {
-    var Z = matrix(10, 10);
-
-    var H = [
-    	[ 3, 2, 1, 5 ],
-    	[ 3, 2, 3, 2 ],
-    	[ 0, 2, 3, 3 ],
-    	[ 0, 0, 1, 6 ]
-    ];
-    var A = [
-	[ 1, 0, 2],
-	[-1, 3, 1]
-    ];
-    var B = [
-	[3, 1],
-	[2, 1],
-	[1, 0]
-    ];
-
+    alert('da scrivere');
 }
 
-// helper
-function toTable(matrix) {
-    var table = '<table border=1 cellpadding=3>';
-
-    for (var i = 0; i < rows(matrix); i++) {
-	table += '<tr align="center">';
-
-	for (var j = 0; j < columns(matrix); j++) {
-	    table += '<td>'+ matrix[i][j] + '</td>';
-	}
-
-	table += "</tr>";
-    }
-
-    table += "</table>";
-    return table;
-}

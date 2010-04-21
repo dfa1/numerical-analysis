@@ -1,10 +1,8 @@
-// test helpers
-
 /*
+ * adapted from:
+ * 
  * LambdaScript, http://bitbucket.org/dfa/lambdascript
  * (c) 2009, 2010 Davide Angelocola <davide.angelocola@gmail.com>
-
-
  */
 
 function Description() {
@@ -96,32 +94,32 @@ function ArrayMatcher(expected) {
     };
 }
 
-// non usato
-// function TypeOfMatcher(expected) {
-//     this.expected = typeOf(expected);
-//     this.actual = null;
+function MatrixMatcher(expected) {
+    this.expected = expected;
+    this.actual = null;
 
-//     function typeOf(obj) {
-//         if (typeof(obj) == 'object') {
-//             if (obj.length) {
-//                 return 'array';
-//             } else {
-//                 return 'object';
-//             }
-//         } else {
-//             return typeof(obj);
-//         }
-//     }
+    this.matches = function(actual) {
+        this.actual = actual;
+	return equals(expected, actual);	
+    };
 
-//     this.matches = function(actual) {
-//         this.actual = typeOf(actual);
-//         return this.actual === this.expected;
-//     };
+    this.describeTo = function(description) {
+        var exp = this.expected.toString();
 
-//     this.describeTo = function(description) {
-//         description.append("expected: {1} got: {2}", this.expected, this.actual);
-//     };
-// }
+        if (rows(exp) == 0) {
+            exp = '[[]]';
+        }
+
+        var got = this.actual.toString();
+
+        if (rows(got) == 0) {
+            got = '[][]';
+        }
+
+        description.append("expected: {1} got: {2}", exp, got);
+    };
+}
+
 
 var results = {
     total  : 0,
@@ -132,7 +130,9 @@ var results = {
 function is(actual, expected) {
     var matcher;
 
-    if (type(expected) === 'array') {
+    if (rows(expected)) { // check for matrix
+	matcher = new MatrixMatcher(expected);
+    } else if (type(expected) === 'array') {
         matcher = new ArrayMatcher(expected);
     } else {
         matcher = new IsMatcher(expected);
@@ -144,10 +144,10 @@ function is(actual, expected) {
         var description = new Description();
         matcher.describeTo(description);
 	$('#results').append($('<p> ERROR :' + description.toString() + '</p>'));
-	results.error++;
+	results.error += 1;
     } else {
-	results.ok++;	
+	results.ok += 1;	
     }
 
-    results.total ++;	
+    results.total += 1;	
 }
