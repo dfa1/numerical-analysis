@@ -36,6 +36,15 @@ function columns(matrix) {
     }
 }
 
+// returns indexes between 0 and n - 1
+function indexes(upTo) {
+    return range(0, upTo - 1);
+}
+
+function iterate(n, f) {
+    each(indexes(n), f);
+}
+
 function equals(A, B) {
     if (rows(A) != rows(B)) {
 	return false;
@@ -46,20 +55,15 @@ function equals(A, B) {
     }
 
     var equal = true;
-    each(indexes(rows(A)), function(i) {
-    	     each(indexes(columns(A)), function(j) {
-		      if (A[i][j] !== B[i][j]) {
-			  equal = false;
-		      }
-		  })
-	 });
+    iterate(rows(A), function(i) {
+	iterate(columns(A), function(j) {
+	    if (A[i][j] !== B[i][j]) {
+		equal = false;
+	    }
+	})
+    });
 
     return equal;
-}
-
-// returns indexes between 0 and n - 1
-function indexes(upTo) {
-    return range(0, upTo - 1);
 }
 
 function row(size, filler) {
@@ -85,10 +89,10 @@ function matrix(n, m) {
 
     var matrix = new Array();
 
-    each(indexes(n), function() {
-	     matrix.push(row(m));	     
-	 });
-    
+    iterate(n, function() {
+	matrix.push(row(m));	     
+    });
+
     matrix.rows = n;
     matrix.columns = m;
     return matrix;
@@ -96,18 +100,19 @@ function matrix(n, m) {
 
 function copy(aMatrix) {
     var copy = matrix(rows(aMatrix), columns(aMatrix));
-    each(indexes(rows(aMatrix)), function(i) {
-    	     each(indexes(columns(aMatrix)), function(j) {
-    		      copy[i][j] = aMatrix[i][j];
-    		  })});
+    iterate(rows(aMatrix), function(i) {
+    	iterate(columns(aMatrix), function(j) {
+    	    copy[i][j] = aMatrix[i][j];
+    	})
+    });
     return copy;
 }
 
 function identity(n) {
     var I = matrix(n, n);
-    each(indexes(n), function(i) {
-	     I[i][i] = 1;
-	 });
+    iterate(n, function(i) {
+	I[i][i] = 1;
+    });
     return I;
 }
 
@@ -118,13 +123,13 @@ function mul(A, B) {
 
     var R = matrix(rows(A), columns(B));
 
-    each(indexes(rows(A)), function(i) {
-	     each(indexes(columns(B)), function(j) {
-		      each(indexes(columns(A)), function(k) {
-			       R[i][j] += (A[i][k] * B[k][j]);
-			   })
-		  })
-	 });
+    iterate(rows(A), function(i) {
+	iterate(columns(B), function(j) {
+	    iterate(columns(A), function(k) {
+		R[i][j] += (A[i][k] * B[k][j]);
+	    })
+	})
+    });
 
     return R;
 }
@@ -132,11 +137,11 @@ function mul(A, B) {
 function traspose(A) {
     var T = matrix(columns(A), rows(A));
 
-    each(indexes(rows(A)), function(i) {
-	     each(indexes(columns(A)), function(j) {
-		      T[j][i] = A[i][j];
-		  }); 
-	 });
+    iterate(rows(A), function(i) {
+	iterate(columns(A), function(j) {
+	    T[j][i] = A[i][j];
+	}) 
+    });
     
     return T;
 }
@@ -153,9 +158,9 @@ function Q(n, i, alpha, beta) {
 function S(n, p, q, alpha, beta) {
     var S = matrix(n, n);
 
-    each(indexes(n), function(i) {
-	     S[i][i] = 1;
-	 });
+    iterate(n, function(i) {
+	S[i][i] = 1;
+    });
     
     S[p][p] = alpha;
     S[p][q] = beta;
@@ -190,9 +195,9 @@ function abate(n) {
     // left matrix
     var A = matrix(n, n);
     
-    each(indexes(n - 1), function(i) {
-	     A[i][i] = n + i;
-	 });
+    iterate(n - 1, function(i) {
+	A[i][i] = n + i;
+    });
     
     A[n-1][n-1] = 2 * (n - 2);
 
@@ -200,17 +205,17 @@ function abate(n) {
     var B = matrix(n, n);
     B[0][0] = -3;
     
-    each(range(n - 1), function(i) {
-    	     B[i][i] = -1;
-    	 });
+    iterate(n - 1, function(i) {
+    	B[i][i] = -1;
+    });
 
-    each(indexes(n), function(i) {
-    	     B[i][i+1] = 1;
-    	 });
+    iterate(n, function(i) {
+	B[i][i+1] = 1;
+    });
     
-    each(range(n - 1), function(i) {
-    	     B[i][0] = -2;
-    	 });
+    iterate(n - 1, function(i) {
+    	B[i][0] = -2;
+    });
     
     return mul(A, B);
 }
