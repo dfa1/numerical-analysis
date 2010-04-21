@@ -28,15 +28,20 @@ function runtests() {
 	     is(columns(matrix(i, i)), i);
 	 });
 
+    is(equals(matrix(3), matrix(3)), true);
+    is(equals(matrix(4), matrix(3)), false);
+    is(equals(identity(3), identity(3)), true);
+    is(equals(identity(4), identity(3)), false);
+
     is(type(identity(1)), 'array');
     is(type(identity(0)), 'array');
     is(type(identity(-1)), 'array');
     
     dump(identity(3), 'Matrice identit&agrave;');
 
-    for (var i = 0; i < 10; i++) {
+    each(range(10), function(i) {
     	is(traspose(traspose(identity(i))), identity(i));
-    }
+    });
 
     // http://en.wikipedia.org/wiki/Matrix_(mathematics)
     var A = [
@@ -62,6 +67,19 @@ function runtests() {
     each(range(10), function(i) {
 	     dump(abate(i), 'Matrice di Abate i='+i);
 	 });
+    
+    dump(matrix(10, 10), 'matrix 10x10');
+    each(range(10), function(i) {
+    	     is(mul(identity(i), matrix(i, i)), matrix(i, i));
+	 });
+
+    each(range(10), function(i) {
+    	     is(mul(matrix(i, i), identity(i)), matrix(i, i));
+	 });    
+
+    each(range(10), function(i) {
+    	     is(rows(matrix(i)), i);
+	 });    
 
 
     dump(S(10, 5, 7, 42, 84), 'S<sub>5 7</sub>');

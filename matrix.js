@@ -55,6 +55,10 @@ function row(size, filler) {
     if (size < 1) {
 	size = 1;
     }
+    
+    if (isundef(filler)) {
+	filler = 0;
+    }
 
     var row = new Array(size);
 
@@ -70,7 +74,7 @@ function matrix(n, m) {
 	n = 1;
     }
 
-    if (m < 1) {
+    if (isundef(m) || m < 1) {
 	m = 1;
     }
 
