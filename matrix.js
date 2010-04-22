@@ -232,7 +232,7 @@ function debug(string) {
 }
 
 function dump(matrix, caption) {
-    var table = '<table border=1 cellpadding=3>';
+    var table = '<table border=1 cellpadding=1>';
 
     if (caption) {
 	table += '<caption align="bottom">' + caption + '</caption>';
@@ -265,7 +265,7 @@ function decompose(matrix) {
 
 // the main
 function main() {
-    var A = abate(4);
+    var A = abate(5);
     decompose(A);
 }
 

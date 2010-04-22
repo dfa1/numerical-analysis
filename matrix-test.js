@@ -166,6 +166,16 @@ function runtests() {
 	];
 	decompose(A);
     });
+
+    // notes
+    tests.push(function testQRByWikipedia3() {
+	var A = [
+	    [ 0, 0, 1],
+    	    [ 1, 0, 0],
+	    [ 0, 1, 0]
+	];
+	decompose(A);
+    });
     
     
     // run tests while catching exceptions    
