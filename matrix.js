@@ -245,15 +245,19 @@ function dump(matrix, caption) {
     $('#results').append($(table));
 }
 
-// the main
-function main() {
-    var A = abate(4);
-    dump(A, 'the abate\'s matrix');
-    var decomposition = QR(A);
+function decompose(matrix) {
+    debug('<hr/>');
+    dump(matrix, 'Decomposing..');
+    var decomposition = QR(matrix);
     dump(decomposition.R, 'R');
     dump(decomposition.Q, 'Q');
 }
 
+// the main
+function main() {
+    var A = abate(4);
+    decompose(A);
+}
 
 
 // TODO
