@@ -1,4 +1,3 @@
-
 var results = {
     total  : 0,
     ok     : 0,
@@ -90,7 +89,7 @@ function runtests() {
     });
 
     tests.push(function testAbateMatrices () {
-	each(range(10), function(i) {
+	each(range(2, 10), function(i) {
     	    dump(abate(i), 'Matrice di Abate n='+i);
     	});
     });
