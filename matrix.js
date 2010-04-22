@@ -170,7 +170,20 @@ function S(n, p, q, alpha, beta) {
 }
 
 function QR(A) {
-
+    iterate(rows(A), function(i) {
+	iterate(columns(A), function(j) {
+	    if (i > j) {
+		$('#results').append(format('<p>{1},{2}</p>', i + 1,j +1));    
+		var a = [i-1][j];
+		var b = A[i][j];
+		var r = hypot(a, b);
+		var alpha = a / r;
+		var beta = b / r;
+		var G = Q(rows(A), i, j);
+		dump(G);
+	    }
+	})
+    });
 }
 
 function hessembergize(A) {

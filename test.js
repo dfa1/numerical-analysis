@@ -120,13 +120,6 @@ function MatrixMatcher(expected) {
     };
 }
 
-
-var results = {
-    total  : 0,
-    ok     : 0,
-    error  : 0
-};
-
 function is(actual, expected) {
     var matcher;
 
@@ -143,11 +136,6 @@ function is(actual, expected) {
     if (!passed) {
         var description = new Description();
         matcher.describeTo(description);
-	$('#results').append($('<p> ERROR :' + description.toString() + '</p>'));
-	results.error += 1;
-    } else {
-	results.ok += 1;	
+	throw description.toString();
     }
-
-    results.total += 1;	
 }

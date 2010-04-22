@@ -19,87 +19,147 @@ function dump(matrix, caption) {
     $('#results').append($(table));
 }
 
+var results = {
+    total  : 0,
+    ok     : 0,
+    error  : 0
+};
+
 function runtests() {
-    is(equals(identity(10), copy(identity(10))));
-    is(equals(matrix(10), copy(matrix(10))));
-    
-    each(range(10), function(i) {
-	     is(rows(matrix(i, i)), i);    
-	 });
+    var tests = [];
 
-    each(range(10), function(i) {
-	     is(columns(matrix(i, i)), i);
-	 });
-
-    is(equals(matrix(3), matrix(3)), true);
-    is(equals(matrix(4), matrix(3)), false);
-    is(equals(identity(3), identity(3)), true);
-    is(equals(identity(4), identity(3)), false);
-
-    is(type(identity(1)), 'array');
-    is(type(identity(0)), 'array');
-    is(type(identity(-1)), 'array');
-    
-    dump(identity(3), 'Matrice identit&agrave;');
-
-    each(range(10), function(i) {
-    	is(traspose(traspose(identity(i))), identity(i));
+    // template    
+    tests.push(function () {
+    	       
     });
 
-    // http://en.wikipedia.org/wiki/Matrix_(mathematics)
-    var A = [
-	[ 1, 0, 2],
-	[-1, 3, 1]
-    ];
-
-    var B = [
-	[3, 1],
-	[2, 1],
-	[1, 0]
-    ];
-
-    var C = [
-	[ 5, 1],
-	[ 4, 2]
-    ];
-
-    is(mul(A, identity(3)), A);
-    is(mul(B, identity(2)), B);
-    is(mul(A, B), C);
-
-    each(range(10), function(i) {
-	     dump(abate(i), 'Matrice di Abate i='+i);
-	 });
-    
-    dump(matrix(10, 10), 'matrix 10x10');
-    each(range(10), function(i) {
-    	     is(mul(identity(i), matrix(i, i)), matrix(i, i));
-	 });
-
-    each(range(10), function(i) {
-    	     is(mul(matrix(i, i), identity(i)), matrix(i, i));
-	 });    
-
-    each(range(10), function(i) {
+    tests.push(function testBuildSquareMatrixWithOneParam () {
+	iterate(10, function(i) {
     	     is(rows(matrix(i)), i);
-	 });    
+    	 });    
+    });
 
+    tests.push(function testCopyIdentity() {
+	is(equals(identity(10), copy(identity(10))));
+    });
+    
+    tests.push(function testCopyMatrix() {
+	is(equals(matrix(10), copy(matrix(10))));
+    });
+    
+    tests.push(function testRows() {
+	iterate(10, function(i) {
+	    is(rows(matrix(i, i)), i);    
+	});
+    });
+    
+    tests.push(function testColumns() {
+	iterate(10, function(i) {
+     	     is(columns(matrix(i, i)), i);
+        });
+    });
+    
+    tests.push(function testEquals() {
+	is(equals(matrix(3), matrix(3)), true);
+	is(equals(matrix(4), matrix(3)), false);
+	is(equals(identity(3), identity(3)), true);
+	is(equals(identity(4), identity(3)), false);
+    });
 
-    dump(S(10, 5, 7, 42, 84), 'S<sub>5 7</sub>');
-    dump(Q(5, 0, 2, 2));
-    dump(Q(5, 1, 2, 2));
-    dump(Q(5, 2, 2, 2));
-    dump(Q(5, 3, 2, 2));
+    tests.push(function dumpIdentity() {
+	dump(identity(3), 'Matrice identit&agrave;');
+    });
+    
+    tests.push(function testTraspose() {
+	iterate(10, function(i) {
+	    is(traspose(traspose(identity(i))), identity(i));
+	});
+    });
+    
+    tests.push(function testMulWikiPedia() {
+	// http://en.wikipedia.org/wiki/Matrix_(mathematics)
+	var A = [
+	    [ 1, 0, 2],
+    	    [-1, 3, 1]
+	];
 
-    // dump(hessembergize(abate(4)));
+	var B = [
+	    [3, 1],
+    	    [2, 1],
+    	    [1, 0]
+	];
 
-    var H = [
-    	[ 3, 2, 1, 5 ],
-    	[ 3, 2, 3, 2 ],
-    	[ 0, 2, 3, 3 ],
-    	[ 0, 0, 1, 6 ]
-    ];
+	var C = [
+	    [ 5, 1],
+    	    [ 4, 2]
+	];
 
+	is(mul(A, identity(3)), A);
+	is(mul(B, identity(2)), B);
+	is(mul(A, B), C);
+    });
+
+    tests.push(function testMulByIdentity() {
+	iterate(10, function(i) {
+    	    is(mul(identity(i), matrix(i, i)), matrix(i, i));
+    	});
+    
+	iterate(10, function(i) {
+    	    is(mul(matrix(i, i), identity(i)), matrix(i, i));
+    	});    
+    });
+
+    
+    tests.push(function testAbateMatrices () {
+	iterate(10, function(i) {
+    	    dump(abate(i), 'Matrice di Abate i='+i);
+    	});
+    });
+
+    tests.push(function testSQ () {
+	dump(S(10, 5, 7, 42, 84), 'S<sub>5 7</sub>');
+	dump(Q(5, 0, 2, 2));
+	dump(Q(5, 1, 2, 2));
+	dump(Q(5, 2, 2, 2));
+	dump(Q(5, 3, 2, 2));
+    });
+
+    tests.push(function testHessembergize() {
+	// dump(hessembergize(abate(4)));
+    });
+    
+    tests.push(function testToTriangular() {
+    // var H = [
+    // 	[ 3, 2, 1, 5 ],
+    // 	[ 3, 2, 3, 2 ],
+    // 	[ 0, 2, 3, 3 ],
+    // 	[ 0, 0, 1, 6 ]
+    // ];
+    });
+    
+    tests.push(function testQR() {
+	var Z = [
+	    [6, 5, 0],
+    	    [5, 1, 4],
+    	    [0, 4, 3]
+	];
+   
+	is(QR(Z), matrix(3, 3));
+    });
+
+    // run tests while catching exceptions    
+    each(tests, function(test) {
+	 try {
+	     test();
+	     results.ok++;
+	 } catch (x) {
+	     results.error++;
+	     $('#results').append($(format('<b>{1}</b>: {2}<br/>', test.name, x)));
+	 }
+	     
+	 results.total++;
+     });	
+    
     // results
     summary();
 }

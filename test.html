@@ -12,8 +12,10 @@
     <body>
         <h1>test matrix</h1>
         <script type="text/javascript">
-		LambdaScript.install();
-		window.onload = runtests;
+		$(function() {
+		     LambdaScript.install();
+		     runtests();
+		});
         </script>
 	<div id="results"></div>
 
