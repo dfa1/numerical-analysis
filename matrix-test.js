@@ -1,23 +1,3 @@
-function dump(matrix, caption) {
-    var table = '<table border=1 cellpadding=3>';
-
-    if (caption) {
-	table += '<caption align="bottom">' + caption + '</caption>';
-    }
-
-    for (var i = 0; i < rows(matrix); i++) {
-	table += '<tr align="center">';
-
-	for (var j = 0; j < columns(matrix); j++) {
-	    table += '<td>'+ matrix[i][j] + '</td>';
-	}
-
-	table += "</tr>";
-    }
-
-    table += "</table>";
-    $('#results').append($(table));
-}
 
 var results = {
     total  : 0,
@@ -116,12 +96,12 @@ function runtests() {
     	});
     });
 
-    tests.push(function testSQ () {
+    tests.push(function testGivens () {
 //	dump(S(10, 5, 7, 42, 84), 'S<sub>5 7</sub>');
-	dump(Q(5, 0, 2, 2));
-	dump(Q(5, 1, 2, 2));
-	dump(Q(5, 2, 2, 2));
-	dump(Q(5, 3, 2, 2));
+	dump(givens(5, 0, 2, 2));
+	dump(givens(5, 1, 2, 2));
+	dump(givens(5, 2, 2, 2));
+	dump(givens(5, 3, 2, 2));
     });
 
     tests.push(function testHessembergize() {
@@ -137,7 +117,8 @@ function runtests() {
     // ];
     });
     
-    tests.push(function testQR() {
+    // http://en.wikipedia.org/wiki/Givens_rotation
+    tests.push(function testQRByWikipedia() {
 	var A = [
 	    [6, 5, 0],
     	    [5, 1, 4],
@@ -148,7 +129,32 @@ function runtests() {
 	dump(decomposition.R, 'R');
 	dump(decomposition.Q, 'Q');
     });
-
+    
+    // http://en.wikipedia.org/wiki/QR_decomposition
+    tests.push(function testQRByWikipedia2() {
+	var A = [
+	    [ 12, -51,   4],
+    	    [  6, 167, -68],
+    	    [ -4,  24, -41]
+	];
+   
+	var decomposition = QR(A);
+	dump(decomposition.R, 'R');
+	dump(decomposition.Q, 'Q');
+    });
+    
+    // http://reference.wolfram.com/mathematica/ref/QRDecomposition.html
+    tests.push(function testQRByMathematica() {
+	var A = [
+	    [ 1, 2, 3],
+    	    [ 4, 5, 6]
+	];
+   
+	var decomposition = QR(A);
+	dump(decomposition.R, 'R');
+	dump(decomposition.Q, 'Q');
+   });
+    
     // run tests while catching exceptions    
     each(tests, function(test) {
 	 try {
