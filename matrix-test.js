@@ -156,6 +156,7 @@ function runtests() {
     
     // http://en.wikipedia.org/wiki/QR_decomposition
     tests.push(function testQRByWikipedia2() {
+	// TODO: doesn't converge!
 	var A = [
 	    [ 12, -51,   4],
     	    [  6, 167, -68],

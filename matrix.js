@@ -253,7 +253,7 @@ function QR(A) {
 		var G = givens(rows(A), i-1, alpha, beta);
 		dump(G, 'G' + '<sub>' + k + '</sub>');
 		A = mul(G, A);
-		dump(A, 'A' + '<sub>k+1</sub>');
+		dump(A, 'A' + '<sub>' + k + '</sub>');
 		Q = mul(Q, traspose(G));
 		k = k + 1;
 	    }
@@ -301,7 +301,7 @@ function dump(matrix, caption) {
 
 function decompose(matrix) {
     debug('<hr/>');
-    dump(matrix, 'Decomposing');
+    dump(matrix, 'A');
     var decomposition = QR(matrix);
     dump(decomposition.R, 'R');
     dump(decomposition.Q, 'Q');
@@ -312,8 +312,18 @@ function decompose(matrix) {
 
 // the main
 function main() {
-    var A = [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]];
-    var H = hessenbergize(A);
-    dump(H, 'Hessenberg form of A');
-    //decompose(traspose(A));
+    var A = [
+	    [6, 5, 0],
+    	    [5, 1, 4],
+    	    [0, 4, 3]
+	];
+    var B = [
+	[ 3, 2, 1, 5 ],
+	[ 3, 2, 3, 2 ],
+	[ 0, 2, 3, 3 ],
+    	[ 0, 0, 1, 6 ]];
+
+    // var H = hessenbergize(A);
+    // dump(H, 'Hessenberg form of A');
+    decompose(traspose(abate(15)));
 }
