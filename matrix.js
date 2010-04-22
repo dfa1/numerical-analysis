@@ -199,13 +199,18 @@ function QR(A) {
 		debug(format('zero({1},{2})', i + 1,j +1));    
 		var a = A[i-1][j];
 		var b = A[i][j];
+		
+		if (a == 0 && b == 0) {
+		    b = 1;
+		}
+		
 		var r = hypot(a, b);
 		debug('a = ' + a);
 		debug('b = ' + b);
 		debug('r = ' + r);
 		var alpha = a / r;
 		var beta = b / r;
-			       
+		debug('condition : ' + (square(alpha) + square(beta)));	
 		var G = givens(rows(A), i - 1, alpha, beta);
 		dump(G, 'G' + i);
 		A = mul(G, A);
