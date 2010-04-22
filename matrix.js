@@ -105,7 +105,7 @@ function matrix(n, m) {
 }
 
 // duplicate a matrix
-// TODO: not very efficient :-(
+// TODO: slow :-(
 function copy(matrix) {
     return traspose(traspose(matrix));
 }
@@ -173,9 +173,10 @@ function hessenbergize(A) {
     debug('n = ' + n);
     dump(Ak, 'the input');
     
-    each(range(1, n - 2), function(p) {
-	each(range(p, n - 1), function(q) {
+    each(range(0, n-1), function(p) {
+	each(range(p+2, n-2), function(q) {
 	    debug(format('step {1}, {2}', p, q));
+		 
 	    var a = Ak[p-1][p];
 	    var b = Ak[p-1][q];
 	    var d = hypot(a, b);
@@ -185,8 +186,8 @@ function hessenbergize(A) {
 	    debug('a = ' + a);
 	    debug('b = ' + b);
 	    debug('d = ' + d);
-
 	    debug('condition : ' + (square(alpha) + square(beta)));	
+		 
 	    var Sk = givens2(n, p, q, alpha, beta);
 	    dump(Sk, 'S<sub>' + p + ',' + q + '</sub>');
 	    dump(Ak, 'A<sub>' + k + '</sub>');
@@ -247,9 +248,9 @@ function QR(A) {
 		debug('b = ' + b);
 		debug('r = ' + r);
 		var alpha = a / r;
-		var beta = -b / r;
+		var beta = b / r;
 		debug('condition : ' + (square(alpha) + square(beta)));	
-		var G = givens(rows(A), i - 1, alpha, beta);
+		var G = givens(rows(A), i-1, alpha, beta);
 		dump(G, 'G' + '<sub>' + k + '</sub>');
 		A = mul(G, A);
 		dump(A, 'A' + '<sub>k+1</sub>');
@@ -271,7 +272,7 @@ function debug(string) {
 }
 
 function dump(matrix, caption) {
-    var table = '<table border=1 cellpadding=4 style="margin-bottom: 3%">';
+    var table = '<table border="1" cellpadding="4" style="margin-bottom: 3%">';
 
     if (caption) {
 	table += '<caption align="bottom">' + caption + '</caption>';
@@ -291,16 +292,16 @@ function dump(matrix, caption) {
 	    table += '<td ' + style + '>'+ v + '</td>';
 	}
 
-	table += "</tr>";
+	table += '</tr>';
     }
 
-    table += "</table>";
+    table += '</table>';
     $('#results').append($(table));
 }
 
 function decompose(matrix) {
     debug('<hr/>');
-    dump(matrix, 'Decomposing..');
+    dump(matrix, 'Decomposing');
     var decomposition = QR(matrix);
     dump(decomposition.R, 'R');
     dump(decomposition.Q, 'Q');
@@ -309,11 +310,10 @@ function decompose(matrix) {
     dump(A, 'A = QR');
 }
 
-
 // the main
 function main() {
     var A = abate(5);
-    var H = hessenbergize(A);
-    dump(H, 'Hessenberg form of A');
-//    decompose(A);
+    // var H = hessenbergize(A);
+    // dump(H, 'Hessenberg form of A');
+    decompose(traspose(A));
 }
