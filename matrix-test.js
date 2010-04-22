@@ -107,15 +107,18 @@ function runtests() {
     tests.push(function testHessembergize() {
 	// dump(hessembergize(abate(4)));
     });
+
+    // http://math.fullerton.edu/mathews/n2003/qrmethod/QRmethodMod/Links/QRmethodMod_lnk_2.html    
+    tests.push(function testQRHessemberg() {
+	var A = [
+	    [ 2,  4,  2 ],
+    	    [ -1, 0, -4 ],
+    	    [ 2,  2, -1 ],
+	];
+	decompose(A);
+    });
     
-    function decompose(matrix) {
-	debug('<hr/>');
-	dump(matrix, 'Decomposing..');
-	var decomposition = QR(matrix);
-	dump(decomposition.R, 'R');
-	dump(decomposition.Q, 'Q');
-    }
-    
+    // TODO
     tests.push(function testQRHessemberg() {
 	var H = [
 	    [ 3, 2, 1, 5 ],

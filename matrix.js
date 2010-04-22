@@ -160,35 +160,6 @@ function givens(n, i, alpha, beta) {
     return givens;
 }
 
-function QR(A) {
-    var Q = identity(rows(A));
-    
-    iterate(rows(A), function(i) {
-	iterate(columns(A), function(j) {
-	    if (i > j) { // skip zeroes (A[i][j] != 0)
-		debug(format('zero({1},{2})', i + 1,j +1));    
-		var a = A[i-1][j];
-		var b = A[i][j];
-		var r = hypot(a, b);
-		debug('a = ' + a);
-		debug('b = ' + b);
-		debug('r = ' + r);
-		var alpha = a / r;
-		var beta = b / r;
-		var G = givens(rows(A), i - 1, alpha, beta);
-		dump(G, 'G' + i);
-		A = mul(G, A);
-		dump(A, 'new A');
-		Q = mul(Q, traspose(G));
-	    }
-	})
-    });
-
-    return {
-	'R': A,
-	'Q': Q
-    };
-}
 
 function abate(n) {
     // left matrix
@@ -217,6 +188,37 @@ function abate(n) {
     });
     
     return mul(A, B);
+}
+
+function QR(A) {
+    var Q = identity(rows(A));
+    
+    iterate(rows(A), function(i) {
+	iterate(columns(A), function(j) {
+	    if (i > j) { // skip zeroes (A[i][j] != 0)
+		debug(format('zero({1},{2})', i + 1,j +1));    
+		var a = A[i-1][j];
+		var b = A[i][j];
+		var r = hypot(a, b);
+		debug('a = ' + a);
+		debug('b = ' + b);
+		debug('r = ' + r);
+		var alpha = a / r;
+		var beta = b / r;
+			       
+		var G = givens(rows(A), i - 1, alpha, beta);
+		dump(G, 'G' + i);
+		A = mul(G, A);
+		dump(A, 'new A');
+		Q = mul(Q, traspose(G));
+	    }
+	})
+    });
+
+    return {
+	'R': A,
+	'Q': Q
+    };
 }
 
 // helpers
@@ -251,6 +253,9 @@ function decompose(matrix) {
     var decomposition = QR(matrix);
     dump(decomposition.R, 'R');
     dump(decomposition.Q, 'Q');
+    var A = mul(decomposition.Q, decomposition.R); 
+    dump(matrix, 'original');
+    dump(A, 'A = QR');
 }
 
 // the main
