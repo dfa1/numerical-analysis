@@ -215,7 +215,7 @@ function abate(n) {
     	B[i][i] = -1;
     });
 
-    each(range(1, n-1), function(i) {
+    each(range(0, n-1), function(i) {
 	B[i][i+1] = 1;
     });
     
