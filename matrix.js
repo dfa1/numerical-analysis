@@ -180,12 +180,12 @@ function hessenbergize(A) {
 	    var b = Ak[p-1][q];
 		 
 	    if (a == 0 && b == 0) {
-		b = 1;
+		a = 1;
 	    }
 		 
 	    var d = hypot(a, b);
 	    var alpha = a / d;
-	    var beta = -b / d;
+	    var beta =  -b / d;
 	    var Sk = givens2(n, p-1, q-1, alpha, beta);
 	    dump(Sk, 'S<sub>' + p + ',' + q + '</sub>');
 	    dump(Ak, 'A<sub>' + k + '</sub>');
@@ -278,7 +278,14 @@ function dump(matrix, caption) {
 	table += '<tr align="center">';
 
 	for (var j = 0; j < columns(matrix); j++) {
-	    table += '<td>'+ matrix[i][j].toFixed(3) + '</td>';
+	    var style = '';
+	    var v = matrix[i][j].toFixed(3);
+
+	    if (v === '0.000') {
+		style='style="color:white"';
+	    }
+	    
+	    table += '<td ' + style + '>'+ v + '</td>';
 	}
 
 	table += "</tr>";
@@ -305,7 +312,5 @@ function main() {
     var A = abate(5);
     var H = hessenbergize(A);
     dump(H, 'Hessenberg form of A');
-    decompose(A);
+//    decompose(A);
 }
-
-
