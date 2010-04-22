@@ -164,24 +164,38 @@ function givens2(n, p, q, alpha, beta) {
     return S;
 }
 
-function hessembergize(A) {
-    var H = copy(A);
+function hessenbergize(A) {
+    var k = 0;
+    var Ak = A;
     var n = rows(A);
-
+    
+    debug('<hr/>');
+    debug('n = ' + n);
+    dump(Ak, 'the input');
+    
     each(range(1, n - 2), function(p) {
-    	     each(range(p + 1, n - 1), function(q) {
-		      var d = sqrt(square(A[p-1][p]) + square(A[p-1][q]));
-		      var alpha = A[p-1][p] / d;
-		      var beta = -A[p-1][q] / d;
-		      var Sk = S(n, p, q, alpha, beta);
-		      print(Sk);
-		      H = mul(traspose(Sk), mul(A, Sk));
-    		  });
-    	 });
+	each(range(p + 1, n - 1), function(q) {
+	    debug(format('step {1}, {2}', p, q));
+	    var a = Ak[p-1][p];
+	    var b = Ak[p-1][q];
+		 
+	    if (a == 0 && b == 0) {
+		b = 1;
+	    }
+		 
+	    var d = hypot(a, b);
+	    var alpha = a / d;
+	    var beta = -b / d;
+	    var Sk = givens2(n, p-1, q-1, alpha, beta);
+	    dump(Sk, 'S<sub>' + p + ',' + q + '</sub>');
+	    dump(Ak, 'A<sub>' + k + '</sub>');
+    	    Ak = mul(mul(traspose(Sk), Ak), Sk);
+	    k = k + 1;
+    	});
+    });
 
-    return H;
+    return Ak;
 }
-
 
 function abate(n) {
     // left matrix
@@ -248,10 +262,6 @@ function QR(A) {
     };
 }
 
-// TODO
-
-
-
 // helpers
 function debug(string) {
     $('#results').append(format('<p>{1}</p>', string));    
@@ -289,9 +299,12 @@ function decompose(matrix) {
     dump(A, 'A = QR');
 }
 
+
 // the main
 function main() {
     var A = abate(5);
+    var H = hessenbergize(A);
+    dump(H, 'Hessenberg form of A');
     decompose(A);
 }
 

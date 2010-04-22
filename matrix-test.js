@@ -89,25 +89,41 @@ function runtests() {
     	});    
     });
 
-    
     tests.push(function testAbateMatrices () {
 	each(range(10), function(i) {
-    	    dump(abate(i), 'Matrice di Abate i='+i);
+    	    dump(abate(i), 'Matrice di Abate n='+i);
     	});
     });
 
     tests.push(function testGivens () {
-//	dump(S(10, 5, 7, 42, 84), 'S<sub>5 7</sub>');
+	dump(givens2(10, 5, 7, 42, 84), 'S<sub>5 7</sub>');
 	dump(givens(5, 0, 2, 2));
 	dump(givens(5, 1, 2, 2));
 	dump(givens(5, 2, 2, 2));
 	dump(givens(5, 3, 2, 2));
     });
 
-    tests.push(function testHessembergize() {
-	// dump(hessembergize(abate(4)));
+    tests.push(function testHessenbergize() {
+	var A = [
+	    [4, 1, 1, 1], 
+	    [1, 4, 1, 0],
+	    [1, 1, 4, 1],
+	    [1, 0, 1, 4]
+	];
+	var H = hessenbergize(A);
     });
-
+    
+    
+    tests.push(function testHessenbergizeSelf() {
+	var A = [
+	    [1, 4, 2, 3], 
+	    [3, 4, 1, 7],
+	    [0, 2, 3, 4],
+	    [0, 0, 1, 3]
+	];
+	var H = hessenbergize(A);
+	is(A, H);	   
+    });
     // http://math.fullerton.edu/mathews/n2003/qrmethod/QRmethodMod/Links/QRmethodMod_lnk_2.html    
     tests.push(function testQRHessemberg() {
 	var A = [
