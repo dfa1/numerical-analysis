@@ -144,7 +144,9 @@ function runtests() {
     	    [0, 4, 3]
 	];
    
-	QR(A);
+	var decomposition = QR(A);
+	dump(decomposition.R, 'R');
+	dump(decomposition.Q, 'Q');
     });
 
     // run tests while catching exceptions    

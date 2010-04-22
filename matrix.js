@@ -1,4 +1,3 @@
-
 function constant(k) {
     return function() {
 	return k;
@@ -149,16 +148,16 @@ function traspose(A) {
     return T;
 }
 
-function Q(n, i, alpha, beta) {
-    var Q = matrix(n, n);
-    iterate(rows(Q), function(i) {
-	Q[i][i] = 1;
+function givens(n, i, alpha, beta) {
+    var givens = matrix(n, n);
+    iterate(rows(givens), function(i) {
+	givens[i][i] = 1;
     });
-    Q[i][i] = alpha;
-    Q[i+1][i] = -beta;
-    Q[i][i+1] = beta;
-    Q[i+1][i+1] = alpha;
-    return Q;
+    givens[i][i] = alpha;
+    givens[i+1][i] = -beta;
+    givens[i][i+1] = beta;
+    givens[i+1][i+1] = alpha;
+    return givens;
 }
 
 // function S(n, p, q, alpha, beta) {
@@ -176,10 +175,12 @@ function Q(n, i, alpha, beta) {
 // }
 
 function QR(A) {
+    var Q = identity(rows(A));
+    
     iterate(rows(A), function(i) {
 	iterate(columns(A), function(j) {
 	    if (i > j) { // skip zeroes (A[i][j] != 0)
-		debug(format('azzero {1},{2}', i + 1,j +1));    
+		debug(format('zero({1},{2})', i + 1,j +1));    
 		var a = A[i-1][j];
 		var b = A[i][j];
 		var r = hypot(a, b);
@@ -188,13 +189,19 @@ function QR(A) {
 		debug('r = ' + r);
 		var alpha = a / r;
 		var beta = b / r;
-		var G = Q(rows(A), i - 1, alpha, beta);
+		var G = givens(rows(A), i - 1, alpha, beta);
 		dump(G, 'G' + i);
 		A = mul(G, A);
 		dump(A, 'new A');
+		Q = mul(Q, traspose(G));
 	    }
 	})
     });
+
+    return {
+	'R': A,
+	'Q': Q
+    };
 }
 
 function hessembergize(A) {
