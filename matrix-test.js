@@ -117,7 +117,7 @@ function runtests() {
     });
 
     tests.push(function testSQ () {
-	dump(S(10, 5, 7, 42, 84), 'S<sub>5 7</sub>');
+//	dump(S(10, 5, 7, 42, 84), 'S<sub>5 7</sub>');
 	dump(Q(5, 0, 2, 2));
 	dump(Q(5, 1, 2, 2));
 	dump(Q(5, 2, 2, 2));
@@ -138,13 +138,13 @@ function runtests() {
     });
     
     tests.push(function testQR() {
-	var Z = [
+	var A = [
 	    [6, 5, 0],
     	    [5, 1, 4],
     	    [0, 4, 3]
 	];
    
-	is(QR(Z), matrix(3, 3));
+	QR(A);
     });
 
     // run tests while catching exceptions    

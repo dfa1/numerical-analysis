@@ -1,3 +1,4 @@
+
 function constant(k) {
     return function() {
 	return k;
@@ -13,7 +14,7 @@ function square(n) {
 }
 
 function hypot(a, b) {
-    return sqrt(square(a), square(b));
+    return sqrt(square(a) + square(b));
 }
 
 function rows(matrix) {
@@ -150,39 +151,47 @@ function traspose(A) {
 
 function Q(n, i, alpha, beta) {
     var Q = matrix(n, n);
+    iterate(rows(Q), function(i) {
+	Q[i][i] = 1;
+    });
     Q[i][i] = alpha;
-    Q[i+1][i] = beta;
-    Q[i][i+1] = -beta;
+    Q[i+1][i] = -beta;
+    Q[i][i+1] = beta;
     Q[i+1][i+1] = alpha;
     return Q;
 }
 
-function S(n, p, q, alpha, beta) {
-    var S = matrix(n, n);
+// function S(n, p, q, alpha, beta) {
+//     var S = matrix(n, n);
 
-    iterate(n, function(i) {
-	S[i][i] = 1;
-    });
+//     iterate(n, function(i) {
+// 	S[i][i] = 1;
+//     });
     
-    S[p][p] = alpha;
-    S[p][q] = beta;
-    S[q][p] = -beta;
-    S[q][q] = alpha;
-    return S;
-}
+//     S[p][p] = alpha;
+//     S[p][q] = beta;
+//     S[q][p] = -beta;
+//     S[q][q] = alpha;
+//     return S;
+// }
 
 function QR(A) {
     iterate(rows(A), function(i) {
 	iterate(columns(A), function(j) {
-	    if (i > j) {
-		$('#results').append(format('<p>{1},{2}</p>', i + 1,j +1));    
-		var a = [i-1][j];
+	    if (i > j) { // skip zeroes (A[i][j] != 0)
+		debug(format('azzero {1},{2}', i + 1,j +1));    
+		var a = A[i-1][j];
 		var b = A[i][j];
 		var r = hypot(a, b);
+		debug('a = ' + a);
+		debug('b = ' + b);
+		debug('r = ' + r);
 		var alpha = a / r;
 		var beta = b / r;
-		var G = Q(rows(A), i, j);
-		dump(G);
+		var G = Q(rows(A), i - 1, alpha, beta);
+		dump(G, 'G' + i);
+		A = mul(G, A);
+		dump(A, 'new A');
 	    }
 	})
     });
@@ -235,6 +244,14 @@ function abate(n) {
     return mul(A, B);
 }
 
+// the main
 function main() {
+    debug('sono nel main()');
 }
+
+// helpers
+function debug(string) {
+    $('#results').append(format('<p>{1}</p>', string));    
+}
+
 
