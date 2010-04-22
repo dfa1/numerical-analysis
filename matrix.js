@@ -149,15 +149,37 @@ function traspose(A) {
 }
 
 function givens(n, i, alpha, beta) {
-    var givens = matrix(n, n);
-    iterate(rows(givens), function(i) {
-	givens[i][i] = 1;
+    return givens2(n, i, i+1, alpha, beta);
+}
+
+function givens2(n, p, q, alpha, beta) {
+    var S = matrix(n, n);
+    iterate(n, function(i) {
+	S[i][i] = 1;
     });
-    givens[i][i] = alpha;
-    givens[i+1][i] = -beta;
-    givens[i][i+1] = beta;
-    givens[i+1][i+1] = alpha;
-    return givens;
+    S[p][p] = alpha;
+    S[p][q] = beta;
+    S[q][p] = -beta;
+    S[q][q] = alpha;
+    return S;
+}
+
+function hessembergize(A) {
+    var H = copy(A);
+    var n = rows(A);
+
+    each(range(1, n - 2), function(p) {
+    	     each(range(p + 1, n - 1), function(q) {
+		      var d = sqrt(square(A[p-1][p]) + square(A[p-1][q]));
+		      var alpha = A[p-1][p] / d;
+		      var beta = -A[p-1][q] / d;
+		      var Sk = S(n, p, q, alpha, beta);
+		      print(Sk);
+		      H = mul(traspose(Sk), mul(A, Sk));
+    		  });
+    	 });
+
+    return H;
 }
 
 
@@ -169,7 +191,7 @@ function abate(n) {
 	A[i][i] = n + i;
     });
     
-    A[n-1][n-1] = 2 * (n - 2);
+    A[n-1][n-1] = (2 * n) - 2; // TODO: fixme
 
     // right matrix
     var B = matrix(n, n);
@@ -226,6 +248,10 @@ function QR(A) {
     };
 }
 
+// TODO
+
+
+
 // helpers
 function debug(string) {
     $('#results').append(format('<p>{1}</p>', string));    
@@ -270,34 +296,3 @@ function main() {
 }
 
 
-// TODO
-
-function S(n, p, q, alpha, beta) {
-    var S = matrix(n, n);
-    iterate(n, function(i) {
-	S[i][i] = 1;
-    });
-    S[p][p] = alpha;
-    S[p][q] = beta;
-    S[q][p] = -beta;
-    S[q][q] = alpha;
-    return S;
-}
-
-function hessembergize(A) {
-    var H = copy(A);
-    var n = rows(A);
-
-    each(range(1, n - 2), function(p) {
-    	     each(range(p + 1, n - 1), function(q) {
-		      var d = sqrt(square(A[p-1][p]) + square(A[p-1][q]));
-		      var alpha = A[p-1][p] / d;
-		      var beta = -A[p-1][q] / d;
-		      var Sk = S(n, p, q, alpha, beta);
-		      print(Sk);
-		      H = mul(traspose(Sk), mul(A, Sk));
-    		  });
-    	 });
-
-    return H;
-}
