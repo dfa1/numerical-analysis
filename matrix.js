@@ -258,7 +258,7 @@ function debug(string) {
 }
 
 function dump(matrix, caption) {
-    var table = '<table border=1 cellpadding=1>';
+    var table = '<table border=1 cellpadding=4 style="margin-bottom: 3%">';
 
     if (caption) {
 	table += '<caption align="bottom">' + caption + '</caption>';
@@ -268,7 +268,7 @@ function dump(matrix, caption) {
 	table += '<tr align="center">';
 
 	for (var j = 0; j < columns(matrix); j++) {
-	    table += '<td>'+ matrix[i][j] + '</td>';
+	    table += '<td>'+ matrix[i][j].toFixed(3) + '</td>';
 	}
 
 	table += "</tr>";
