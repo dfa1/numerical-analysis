@@ -34,27 +34,27 @@ function runtests() {
     });
 
     tests.push(function testBuildSquareMatrixWithOneParam () {
-	iterate(10, function(i) {
-    	     is(rows(matrix(i)), i);
+	each(range(10), function(i) {
+    	     is(columns(matrix(i)), i);
     	 });    
     });
 
     tests.push(function testCopyIdentity() {
-	is(equals(identity(10), copy(identity(10))));
+	is(identity(10), copy(identity(10)));
     });
     
     tests.push(function testCopyMatrix() {
-	is(equals(matrix(10), copy(matrix(10))));
+	is(matrix(10), copy(matrix(10)));
     });
     
     tests.push(function testRows() {
-	iterate(10, function(i) {
+	each(range(10), function(i) {
 	    is(rows(matrix(i, i)), i);    
 	});
     });
     
     tests.push(function testColumns() {
-	iterate(10, function(i) {
+	each(range(10), function(i) {
      	     is(columns(matrix(i, i)), i);
         });
     });
@@ -71,7 +71,7 @@ function runtests() {
     });
     
     tests.push(function testTraspose() {
-	iterate(10, function(i) {
+	each(range(10), function(i) {
 	    is(traspose(traspose(identity(i))), identity(i));
 	});
     });
@@ -100,18 +100,18 @@ function runtests() {
     });
 
     tests.push(function testMulByIdentity() {
-	iterate(10, function(i) {
+	each(range(10), function(i) {
     	    is(mul(identity(i), matrix(i, i)), matrix(i, i));
     	});
     
-	iterate(10, function(i) {
+	each(range(10), function(i) {
     	    is(mul(matrix(i, i), identity(i)), matrix(i, i));
     	});    
     });
 
     
     tests.push(function testAbateMatrices () {
-	iterate(10, function(i) {
+	each(range(10), function(i) {
     	    dump(abate(i), 'Matrice di Abate i='+i);
     	});
     });

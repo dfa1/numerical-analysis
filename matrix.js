@@ -86,8 +86,10 @@ function matrix(n, m) {
     if (n < 1) {
 	n = 1;
     }
-
-    if (isundef(m) || m < 1) {
+    
+    if (isundef(m)) {
+	m = n; // square matrix
+    } else if (m < 1) {
 	m = 1;
     }
 
