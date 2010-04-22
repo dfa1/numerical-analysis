@@ -160,20 +160,6 @@ function givens(n, i, alpha, beta) {
     return givens;
 }
 
-// function S(n, p, q, alpha, beta) {
-//     var S = matrix(n, n);
-
-//     iterate(n, function(i) {
-// 	S[i][i] = 1;
-//     });
-    
-//     S[p][p] = alpha;
-//     S[p][q] = beta;
-//     S[q][p] = -beta;
-//     S[q][q] = alpha;
-//     return S;
-// }
-
 function QR(A) {
     var Q = identity(rows(A));
     
@@ -204,6 +190,86 @@ function QR(A) {
     };
 }
 
+function abate(n) {
+    // left matrix
+    var A = matrix(n, n);
+    
+    iterate(n - 1, function(i) {
+	A[i][i] = n + i;
+    });
+    
+    A[n-1][n-1] = 2 * (n - 2);
+
+    // right matrix
+    var B = matrix(n, n);
+    B[0][0] = -3;
+    
+    each(range(1, n-1), function(i) {
+    	B[i][i] = -1;
+    });
+
+    each(range(1, n-1), function(i) {
+	B[i][i+1] = 1;
+    });
+    
+    each(range(1, n - 1), function(i) {
+    	B[i][0] = -2;
+    });
+    
+    return mul(A, B);
+}
+
+// helpers
+function debug(string) {
+    $('#results').append(format('<p>{1}</p>', string));    
+}
+
+function dump(matrix, caption) {
+    var table = '<table border=1 cellpadding=3>';
+
+    if (caption) {
+	table += '<caption align="bottom">' + caption + '</caption>';
+    }
+
+    for (var i = 0; i < rows(matrix); i++) {
+	table += '<tr align="center">';
+
+	for (var j = 0; j < columns(matrix); j++) {
+	    table += '<td>'+ matrix[i][j] + '</td>';
+	}
+
+	table += "</tr>";
+    }
+
+    table += "</table>";
+    $('#results').append($(table));
+}
+
+// the main
+function main() {
+    var A = abate(4);
+    dump(A, 'the abate\'s matrix');
+    var decomposition = QR(A);
+    dump(decomposition.R, 'R');
+    dump(decomposition.Q, 'Q');
+}
+
+
+
+// TODO
+
+function S(n, p, q, alpha, beta) {
+    var S = matrix(n, n);
+    iterate(n, function(i) {
+	S[i][i] = 1;
+    });
+    S[p][p] = alpha;
+    S[p][q] = beta;
+    S[q][p] = -beta;
+    S[q][q] = alpha;
+    return S;
+}
+
 function hessembergize(A) {
     var H = copy(A);
     var n = rows(A);
@@ -221,44 +287,3 @@ function hessembergize(A) {
 
     return H;
 }
-
-function abate(n) {
-    // left matrix
-    var A = matrix(n, n);
-    
-    iterate(n - 1, function(i) {
-	A[i][i] = n + i;
-    });
-    
-    A[n-1][n-1] = 2 * (n - 2);
-
-    // right matrix
-    var B = matrix(n, n);
-    B[0][0] = -3;
-    
-    iterate(n - 1, function(i) {
-    	B[i][i] = -1;
-    });
-
-    iterate(n, function(i) {
-	B[i][i+1] = 1;
-    });
-    
-    iterate(n - 1, function(i) {
-    	B[i][0] = -2;
-    });
-    
-    return mul(A, B);
-}
-
-// the main
-function main() {
-    debug('sono nel main()');
-}
-
-// helpers
-function debug(string) {
-    $('#results').append(format('<p>{1}</p>', string));    
-}
-
-

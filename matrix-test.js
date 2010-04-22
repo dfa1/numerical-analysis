@@ -108,13 +108,22 @@ function runtests() {
 	// dump(hessembergize(abate(4)));
     });
     
-    tests.push(function testToTriangular() {
-    // var H = [
-    // 	[ 3, 2, 1, 5 ],
-    // 	[ 3, 2, 3, 2 ],
-    // 	[ 0, 2, 3, 3 ],
-    // 	[ 0, 0, 1, 6 ]
-    // ];
+    function decompose(matrix) {
+	debug('<hr/>');
+	dump(matrix, 'Decomposing..');
+	var decomposition = QR(matrix);
+	dump(decomposition.R, 'R');
+	dump(decomposition.Q, 'Q');
+    }
+    
+    tests.push(function testQRHessemberg() {
+	var H = [
+	    [ 3, 2, 1, 5 ],
+    	    [ 3, 2, 3, 2 ],
+    	    [ 0, 2, 3, 3 ],
+    	    [ 0, 0, 1, 6 ]
+	];
+	decompose(H);
     });
     
     // http://en.wikipedia.org/wiki/Givens_rotation
@@ -124,10 +133,7 @@ function runtests() {
     	    [5, 1, 4],
     	    [0, 4, 3]
 	];
-   
-	var decomposition = QR(A);
-	dump(decomposition.R, 'R');
-	dump(decomposition.Q, 'Q');
+	decompose(A);
     });
     
     // http://en.wikipedia.org/wiki/QR_decomposition
@@ -137,10 +143,7 @@ function runtests() {
     	    [  6, 167, -68],
     	    [ -4,  24, -41]
 	];
-   
-	var decomposition = QR(A);
-	dump(decomposition.R, 'R');
-	dump(decomposition.Q, 'Q');
+	decompose(A);
     });
     
     // http://reference.wolfram.com/mathematica/ref/QRDecomposition.html
@@ -149,11 +152,8 @@ function runtests() {
 	    [ 1, 2, 3],
     	    [ 4, 5, 6]
 	];
-   
-	var decomposition = QR(A);
-	dump(decomposition.R, 'R');
-	dump(decomposition.Q, 'Q');
-   });
+	decompose(A);
+    });
     
     // http://en.wikipedia.org/wiki/Eigenvalues_and_eigenvectors
     tests.push(function testQRByWikipedia3() {
@@ -161,11 +161,9 @@ function runtests() {
 	    [ 2, 1],
     	    [ 1, 2]
 	];
-   
-	var decomposition = QR(A);
-	dump(decomposition.R, 'R');
-	dump(decomposition.Q, 'Q');
-	       });
+	decompose(A);
+    });
+    
     
     // run tests while catching exceptions    
     each(tests, function(test) {
