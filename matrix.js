@@ -174,19 +174,20 @@ function hessenbergize(A) {
     dump(Ak, 'the input');
     
     each(range(1, n - 2), function(p) {
-	each(range(p + 1, n - 1), function(q) {
+	each(range(p, n - 1), function(q) {
 	    debug(format('step {1}, {2}', p, q));
 	    var a = Ak[p-1][p];
 	    var b = Ak[p-1][q];
-		 
-	    if (a == 0 && b == 0) {
-		a = 1;
-	    }
-		 
 	    var d = hypot(a, b);
 	    var alpha = a / d;
 	    var beta =  -b / d;
-	    var Sk = givens2(n, p-1, q-1, alpha, beta);
+			    
+	    debug('a = ' + a);
+	    debug('b = ' + b);
+	    debug('d = ' + d);
+
+	    debug('condition : ' + (square(alpha) + square(beta)));	
+	    var Sk = givens2(n, p, q, alpha, beta);
 	    dump(Sk, 'S<sub>' + p + ',' + q + '</sub>');
 	    dump(Ak, 'A<sub>' + k + '</sub>');
     	    Ak = mul(mul(traspose(Sk), Ak), Sk);
@@ -228,6 +229,7 @@ function abate(n) {
 
 function QR(A) {
     var Q = identity(rows(A));
+    var k = 1;
     
     iterate(rows(A), function(i) {
 	iterate(columns(A), function(j) {
@@ -245,13 +247,14 @@ function QR(A) {
 		debug('b = ' + b);
 		debug('r = ' + r);
 		var alpha = a / r;
-		var beta = b / r;
+		var beta = -b / r;
 		debug('condition : ' + (square(alpha) + square(beta)));	
 		var G = givens(rows(A), i - 1, alpha, beta);
-		dump(G, 'G' + i);
+		dump(G, 'G' + '<sub>' + k + '</sub>');
 		A = mul(G, A);
-		dump(A, 'new A');
+		dump(A, 'A' + '<sub>k+1</sub>');
 		Q = mul(Q, traspose(G));
+		k = k + 1;
 	    }
 	})
     });
