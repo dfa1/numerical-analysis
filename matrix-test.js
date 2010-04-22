@@ -155,6 +155,18 @@ function runtests() {
 	dump(decomposition.Q, 'Q');
    });
     
+    // http://en.wikipedia.org/wiki/Eigenvalues_and_eigenvectors
+    tests.push(function testQRByWikipedia3() {
+	var A = [
+	    [ 2, 1],
+    	    [ 1, 2]
+	];
+   
+	var decomposition = QR(A);
+	dump(decomposition.R, 'R');
+	dump(decomposition.Q, 'Q');
+	       });
+    
     // run tests while catching exceptions    
     each(tests, function(test) {
 	 try {
