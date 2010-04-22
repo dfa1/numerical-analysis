@@ -178,10 +178,10 @@ function hessenbergize(A) {
 	    debug(format('step {1}, {2}', p, q));
 		 
 	    var a = Ak[p-1][p];
-	    var b = -Ak[p-1][q];
+	    var b = Ak[p-1][q];
 	    var d = hypot(a, b);
 	    var alpha = a / d;
-	    var beta =  b / d;
+	    var beta =  -b / d;
 			    
 	    debug('a = ' + a);
 	    debug('b = ' + b);
@@ -317,13 +317,23 @@ function main() {
     	    [5, 1, 4],
     	    [0, 4, 3]
 	];
+
     var B = [
 	[ 3, 2, 1, 5 ],
 	[ 3, 2, 3, 2 ],
 	[ 0, 2, 3, 3 ],
     	[ 0, 0, 1, 6 ]];
 
-    // var H = hessenbergize(A);
-    // dump(H, 'Hessenberg form of A');
-    decompose(traspose(abate(15)));
+// http://math.fullerton.edu/mathews/n2003/hessenberg/HessenbergMod/Links/HessenbergMod_lnk_2.html
+
+    var C = [
+	[5,1,2,0,4],
+	[1,4,2,1,3],
+	[2,2,5,4,0],
+	[0,1,4,1,3],
+	[4,3,0,3,4]
+    ];
+    var H = hessenbergize(C);
+    dump(H, 'Hessenberg form of C');
+    //decompose(traspose(abate(15)));
 }
