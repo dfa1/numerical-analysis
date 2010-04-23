@@ -225,7 +225,7 @@ function abate(n) {
     each(range(1, n - 1), function(i) {
     	B[i][0] = -2;
     });
-    
+
     return mul(A, B);
 }
 
@@ -260,11 +260,20 @@ function QR(A) {
 	    }
 	})
     });
-
+    
     return {
 	'R': A,
 	'Q': Q
     };
+}
+
+function eigenvalues(A) {
+    var B = A;
+    iterate(100, function() {
+	var dec = QR(B);
+	B = mul(dec.R, dec.Q);
+	dump(B);
+    });
 }
 
 // helpers
@@ -313,34 +322,5 @@ function decompose(matrix) {
 
 // the main
 function main() {
-    var A = [
-	    [6, 5, 0],
-    	    [5, 1, 4],
-    	    [0, 4, 3]
-	];
-
-    var B = [
-	[ 3, 2, 1, 5 ],
-	[ 3, 2, 3, 2 ],
-	[ 0, 2, 3, 3 ],
-    	[ 0, 0, 1, 6 ]];
-
-// http://math.fullerton.edu/mathews/n2003/hessenberg/HessenbergMod/Links/HessenbergMod_lnk_2.html
-    var C = [
-	// [5,1,2,0,4],
-	// [1,4,2,1,3],
-	// [2,2,5,4,0],
-	// [0,1,4,1,3],
-	// [4,3,0,3,4]
-	[1, 1, 0 , 3],
-	[1,-1,0,0],
-	[2,1,-1,1],
-	[5,6,1,1]
-	// [1, 2, 3],
-	// [4,5,6,],
-	// [7,8,9]
-    ];
-    var H = hessenbergize(C);
-    dump(H, 'Hessenberg form of C');
-    decompose(abate(5));
+    eigenvalues(traspose(abate(5)));
 }
