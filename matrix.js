@@ -322,5 +322,10 @@ function decompose(matrix) {
 
 // the main
 function main() {
-    eigenvalues(traspose(abate(5)), 30);
+    var n = 3;
+    var m = 300;
+    var title = format('Abate({1}) con m={2} iterazioni', n, m);
+    document.title = title;
+    $('h1').html(title);
+    eigenvalues(traspose(abate(n)), m);
 }
