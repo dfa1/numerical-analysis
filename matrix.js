@@ -267,9 +267,9 @@ function QR(A) {
     };
 }
 
-function eigenvalues(A) {
+function eigenvalues(A, n) {
     var B = A;
-    iterate(100, function() {
+    iterate(n, function() {
 	var dec = QR(B);
 	B = mul(dec.R, dec.Q);
 	dump(B);
@@ -322,5 +322,5 @@ function decompose(matrix) {
 
 // the main
 function main() {
-    eigenvalues(traspose(abate(5)));
+    eigenvalues(traspose(abate(5)), 30);
 }
