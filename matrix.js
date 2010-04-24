@@ -250,11 +250,11 @@ function QR(A) {
 		debug('r = ' + r);
 		var alpha = a / r;
 		var beta = b / r;
-		debug('condition : ' + (square(alpha) + square(beta)));	
+//		debug('condition : ' + (square(alpha) + square(beta)));	
 		var G = givens(rows(A), i-1, alpha, beta);
-		dump(G, 'G' + '<sub>' + k + '</sub>');
+//		dump(G, 'G' + '<sub>' + k + '</sub>');
 		A = mul(G, A);
-		dump(A, 'A' + '<sub>' + k + '</sub>');
+//		dump(A, 'A' + '<sub>' + k + '</sub>');
 		Q = mul(Q, traspose(G));
 		k = k + 1;
 	    }
@@ -272,8 +272,9 @@ function eigenvalues(A, n) {
     iterate(n, function() {
 	var dec = QR(B);
 	B = mul(dec.R, dec.Q);
-	dump(B);
-    });
+	    });
+    dump(B);
+  
 }
 
 // helpers
@@ -322,10 +323,21 @@ function decompose(matrix) {
 
 // the main
 function main() {
-    var n = 3;
-    var m = 300;
+    var n = 7;
+		var m = 100;
     var title = format('Abate({1}) con m={2} iterazioni', n, m);
     document.title = title;
     $('h1').html(title);
-    eigenvalues(traspose(abate(n)), m);
+//    dump(traspose(abate(n)));
+    
+  //  eigenvalues(traspose(abate(n)), m);
+    var X = [
+	[5,1,2,0,4],
+	[1,4,2,1,3],
+	[2,2,5,4,0],
+	[0,1,4,1,3],
+	[4,3,0,3,4]
+    ];
+
+	    dump(hessenbergize(X), 'H');
 }
